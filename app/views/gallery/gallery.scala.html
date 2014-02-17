@@ -1,11 +1,10 @@
-@(categoryId: Int, categoryTitle: String)
+@(categoryId: Int, categoryTitle: String, galleryTitle: String)
 
-@main("Caroline & Bertrand : " + categoryTitle){
+@main("Caroline & Bertrand : " + galleryTitle){
 
 <script type="text/javascript" src="@routes.Application.javascriptRoutes"></script>
 <script src='@routes.Assets.at("javascripts/comboCategory.js")'></script>
 <script src='@routes.Assets.at("javascripts/comboGallery.js")'></script>
-<script src='@routes.Assets.at("javascripts/tableGallery.js")'></script>
 }{
 
 <div class="navbar navbar-default">
@@ -23,16 +22,12 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gallery <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">@galleryTitle <b class="caret"></b></a>
                 <ul id="galleryMenu" class="dropdown-menu" data-list="@controllers.gallery.routes.Galleries.listBasic(categoryId)">
                 </ul>
             </li>
         </ul>
     </div>
 </div>
-
-<table class="table" id="galleryTable" data-list="@controllers.gallery.routes.Galleries.listBasic(categoryId)">
-
-</table>
 
 }
