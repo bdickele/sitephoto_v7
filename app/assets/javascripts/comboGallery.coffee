@@ -6,6 +6,7 @@ jQuery ($) ->
     galleryList = $galleryMenu.data('list')
     $.get galleryList, (galleries) ->
         $.each galleries, (index, gallery) ->
-            row = "<li><a href='" + jsRoutes.controllers.gallery.Galleries.view(gallery.id)['url'] + "'>" + gallery.title + "</a></li>"
+            row = "<li><a href='" + jsRoutes.controllers.gallery.Galleries.view(gallery.galleryId)['url'] + "'>" +
+                gallery.title + "</a></li>"
             #alert(row)
             $galleryMenu.append(row)

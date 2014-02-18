@@ -28,7 +28,7 @@ object GalleryBasic {
   implicit object GalleryBasicJSONHandler extends Writes[GalleryBasic] {
 
     def writes(gallery: GalleryBasic) = Json.obj(
-      "id" -> Json.toJson(gallery.galleryId),
+      "galleryId" -> Json.toJson(gallery.galleryId),
       "title" -> Json.toJson(gallery.title),
       "thumbnail" -> Json.toJson(gallery.thumbnail)
     )

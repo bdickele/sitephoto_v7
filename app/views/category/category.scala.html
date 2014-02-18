@@ -1,6 +1,6 @@
-@(categoryId: Int, categoryTitle: String)
+@(category: models.category.Category)
 
-@main("Caroline & Bertrand : " + categoryTitle){
+@main("Caroline & Bertrand : " + category.title){
 
 <script type="text/javascript" src="@routes.Application.javascriptRoutes"></script>
 <script src='@routes.Assets.at("javascripts/comboCategory.js")'></script>
@@ -8,30 +8,9 @@
 <script src='@routes.Assets.at("javascripts/tableGallery.js")'></script>
 }{
 
-<div class="navbar navbar-default">
-    <div class="navbar-header">
-        <a href="/">
-            <span class="navbar-brand"><span
-                    class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Caroline et Bertrand</span>
-        </a>
-    </div>
-    <div class="navbar-collapse collapse navbar-responsive-collapse">
-        <ul class="nav navbar-nav">
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">@categoryTitle <b class="caret"></b></a>
-                <ul id="categoryMenu" class="dropdown-menu" data-list="@controllers.category.routes.Categories.list">
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gallery <b class="caret"></b></a>
-                <ul id="galleryMenu" class="dropdown-menu" data-list="@controllers.gallery.routes.Galleries.listBasic(categoryId)">
-                </ul>
-            </li>
-        </ul>
-    </div>
-</div>
+@menu(category.categoryId, category.title, "Gallerie")
 
-<table class="table" id="galleryTable" data-list="@controllers.gallery.routes.Galleries.listBasic(categoryId)">
+<table class="table" id="galleryTable" data-list="@controllers.gallery.routes.Galleries.listBasic(category.categoryId)">
 
 </table>
 

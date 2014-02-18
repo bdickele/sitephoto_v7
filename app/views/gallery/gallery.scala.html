@@ -1,33 +1,25 @@
-@(categoryId: Int, categoryTitle: String, galleryTitle: String)
+@(gallery: models.gallery.Gallery)
 
-@main("Caroline & Bertrand : " + galleryTitle){
+@main("Caroline & Bertrand : " + gallery.title){
 
 <script type="text/javascript" src="@routes.Application.javascriptRoutes"></script>
 <script src='@routes.Assets.at("javascripts/comboCategory.js")'></script>
 <script src='@routes.Assets.at("javascripts/comboGallery.js")'></script>
 }{
 
-<div class="navbar navbar-default">
-    <div class="navbar-header">
-        <a href="/">
-            <span class="navbar-brand"><span
-                    class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Caroline et Bertrand</span>
-        </a>
+@menu(gallery.categoryId, "", gallery.title)
+
+@for(subList <- gallery.pictures.sliding(4, 4)) {
+<div class="row">
+    @for(picture <- subList) {
+    <div class="col-xs-6 col-md-3">
+        <div class="thumbnail">
+            <img src='@picture.thumbnail' class="img-thumbnail">
+        </div>
     </div>
-    <div class="navbar-collapse collapse navbar-responsive-collapse">
-        <ul class="nav navbar-nav">
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">@categoryTitle <b class="caret"></b></a>
-                <ul id="categoryMenu" class="dropdown-menu" data-list="@controllers.category.routes.Categories.list">
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">@galleryTitle <b class="caret"></b></a>
-                <ul id="galleryMenu" class="dropdown-menu" data-list="@controllers.gallery.routes.Galleries.listBasic(categoryId)">
-                </ul>
-            </li>
-        </ul>
-    </div>
+    }
 </div>
+        <br>
+}
 
 }

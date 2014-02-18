@@ -9,21 +9,22 @@ import play.api.libs.concurrent.Execution.Implicits._
 
 /**
  * Created by bdickele
- * Date: 2/16/14
+ * Date: 2/18/14
  */
-object GalleryBasicRW extends Controller with MongoController {
+object GalleryRW extends Controller with MongoController {
 
   def collection = db.collection[BSONCollection]("gallery")
 
-  // --------------------------------------------------------------
-  // FIND
-  // --------------------------------------------------------------
 
-  def findAll(categoryId: Int): Future[List[GalleryBasic]] =
+  def findAllBasic(categoryId: Int): Future[List[GalleryBasic]] =
     collection.
       find(BSONDocument("categoryId" -> categoryId, "online" -> true)).
       sort(BSONDocument("rank" -> -1)).
       cursor[GalleryBasic].
       collect[List]()
 
+  def find(galleryId: Int): Future[Option[Gallery]] =
+    collection.
+      find(BSONDocument("galleryId" -> galleryId, "online" -> true)).
+      one[Gallery]
 }

@@ -319,11 +319,11 @@ img {
   border-radius: 6px;
 }
 .img-thumbnail {
-  padding: 4px;
+  padding: 0px;
   line-height: 1.42857143;
   background-color: #272b30;
-  border: 1px solid #dddddd;
-  border-radius: 4px;
+  border: 1px solid #000;
+  border-radius: 0px;
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   display: inline-block;
@@ -4399,12 +4399,14 @@ a.list-group-item.active > .badge,
 }
 .thumbnail {
   display: block;
-  padding: 4px;
-  margin-bottom: 20px;
+  padding: 5px;
+  margin-bottom: 4px;
+  margin-left: 20px;
+  margin-right: 20px;
   line-height: 1.42857143;
-  background-color: #272b30;
-  border: 1px solid #dddddd;
-  border-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #fff;
+  border-radius: 0px;
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -6116,11 +6118,10 @@ legend {
   position: fixed;
 }
 
-.galleryThumbnailCol{
+.galleryThumbnailCol {
     text-align : right;
-
 }
 
-.galleryThumbnail{
+.galleryThumbnail {
     border : 2px solid #FFFFFF;
 }

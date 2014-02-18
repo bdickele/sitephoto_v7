@@ -24,7 +24,7 @@ object Category {
   implicit object CategoryJSONHandler extends Writes[Category] {
 
     def writes(category: Category) = Json.obj(
-      "id" -> Json.toJson(category.categoryId),
+      "categoryId" -> Json.toJson(category.categoryId),
       "title" -> Json.toJson(category.title)
     )
   }

@@ -21,10 +21,11 @@ object Categories extends Controller {
     future.map {
       option => option match {
         case None => {
-          Logger.error("Incorrect passed categoryId for list of categories")
-          BadRequest("Incorrect passed categoryId for list of categories")
+          val message = "Could not find an online category for id " + categoryId
+          Logger.error(message)
+          BadRequest(message)
         }
-        case Some(category) => Ok(views.html.category.category(category.categoryId, category.title))
+        case Some(category) => Ok(views.html.category.category(category))
       }
     }
   }

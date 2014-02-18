@@ -6,7 +6,7 @@ jQuery ($) ->
     galleryList = $galleryTable.data('list')
     $.get galleryList, (galleries) ->
         $.each galleries, (index, gallery) ->
-            link = jsRoutes.controllers.gallery.Galleries.view(gallery.id)['url']
+            link = jsRoutes.controllers.gallery.Galleries.view(gallery.galleryId)['url']
             row =   "<tr>" +
                     "<td class=\"galleryThumbnailCol\">" +
                     "<a href=\"" + link + "\"><img src=\"" + gallery.thumbnail + "\" class='galleryThumbnail'></a></td>" +
