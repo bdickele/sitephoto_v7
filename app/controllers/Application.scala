@@ -6,7 +6,7 @@ import play.api.mvc._
 object Application extends Controller {
 
   def index = Action {
-    Redirect(category.routes.Categories.view(-1))
+    Redirect(routes.Galleries.view(-1))
   }
 
   /**
@@ -16,8 +16,7 @@ object Application extends Controller {
   def javascriptRoutes = Action {
     implicit request =>
       Ok(Routes.javascriptRouter("jsRoutes")(
-        controllers.category.routes.javascript.Categories.view,
-        controllers.gallery.routes.javascript.Galleries.view)).as("text/javascript")
+        controllers.routes.javascript.Galleries.view)).as("text/javascript")
   }
 
 }

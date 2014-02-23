@@ -7,13 +7,8 @@ GET     /                           controllers.Application.index
 
 GET     /javascriptRoutes           controllers.Application.javascriptRoutes
 
-GET     /category                   controllers.category.Categories.view(categoryId: Int = -1)
-GET     /category/:categoryId       controllers.category.Categories.view(categoryId: Int)
-
-GET     /categoryList               controllers.category.Categories.list
-GET     /galleryList/:categoryId    controllers.gallery.Galleries.listBasic(categoryId: Int)
-
-GET     /gallery/:galleryId         controllers.gallery.Galleries.view(galleryId: Int)
+GET     /gallery/:galleryId         controllers.Galleries.view(galleryId: Int)
+GET     /menu                       controllers.Menus.menu
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

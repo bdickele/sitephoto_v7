@@ -1,0 +1,103 @@
+@(gallery: models.Gallery)
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@gallery.title</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/gallery/reset.css")'/>
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/gallery/main.css")'/>
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/gallery/style.css")'/>
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/gallery/elastislide.css")'/>
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/menu/menu.css")'/>
+    <script type="text/javascript" src="@routes.Application.javascriptRoutes"></script>
+
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow&v1' rel='stylesheet' type='text/css'/>
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'/>
+    <noscript>
+        <style>
+            .es-carousel ul{
+                display:block;
+            }
+        </style>
+    </noscript>
+    <script id="img-wrapper-tmpl" type="text/x-jquery-tmpl">
+			<div class="rg-image-wrapper">
+				{{if itemsCount > 1}}
+					<div class="rg-image-nav">
+						<a href="#" class="rg-image-nav-prev">Previous Image</a>
+						<a href="#" class="rg-image-nav-next">Next Image</a>
+					</div>
+				{{/if}}
+				<div class="rg-image"></div>
+				<div class="rg-loading"></div>
+				<div class="rg-caption-wrapper">
+					<div class="rg-caption" style="display:none;">
+						<p></p>
+					</div>
+				</div>
+			</div>
+    </script>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <a href="#"><span>&laquo; Gallerie précédente </span></a>
+        <span class="right_ab">
+            <a href="#"><span>Gallerie suivante &raquo;</span></a>
+        </span>
+        <div class="clr"></div>
+    </div> <!-- header -->
+
+    <div class="content">
+
+        <div id="dl-menu" class="dl-menuwrapper">
+            <button class="dl-trigger">Open Menu</button>
+            <ul class="dl-menu" id="mainMenu" data-list="@controllers.routes.Menus.menu">
+
+            </ul>
+        </div><!-- /dl-menuwrapper -->
+
+        <h1>@gallery.title <span>@gallery.comment</span></h1>
+
+        <div id="rg-gallery" class="rg-gallery">
+            <div class="rg-thumbs">
+                <!-- Elastislide Carousel Thumbnail Viewer -->
+                <div class="es-carousel-wrapper">
+                    <div class="es-nav">
+                        <span class="es-nav-prev">Previous</span>
+                        <span class="es-nav-next">Next</span>
+                    </div>
+                    <div class="es-carousel">
+                        <ul>
+                            @for(picture <- gallery.pictures){
+                            <li><a href="#"><img src="@picture.thumbnail"
+                                                 data-large="@picture.web"
+                                                 alt="picture.comment"
+                                                 data-description="@picture.comment"/></a></li>
+                            }
+                        </ul>
+                    </div>
+                </div> <!-- End Elastislide Carousel Thumbnail Viewer -->
+            </div> <!-- rg-thumbs -->
+        </div> <!-- rg-gallery -->
+
+    </div>  <!-- content -->
+
+</div> <!-- container -->
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src='@routes.Assets.at("js/menu/modernizr.custom.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("js/menu/jquery.dlmenu.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("js/gallery/jquery.tmpl.min.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("js/gallery/jquery.easing.1.3.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("js/gallery/jquery.elastislide.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("js/gallery/gallery.js")'></script>
+
+<script src='@routes.Assets.at("javascripts/menu.js")'></script>
+</body>
+</html>
