@@ -9,7 +9,6 @@
  * http://www.codrops.com
  */
 ;( function initMenu( $, window, undefined ) {
-//;function initMenu( $, window, undefined ) {
 
 	'use strict';
 
@@ -250,5 +249,4 @@
 		}
 		return this;
 	};
-//};
 } )( jQuery, window );

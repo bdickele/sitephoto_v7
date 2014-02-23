@@ -46,24 +46,23 @@
 <div class="container">
 
     <div class="header">
-        <a href="#"><span>&laquo; Gallerie précédente </span></a>
+        <a href="@controllers.routes.Galleries.previous(gallery.galleryId)"><span>&laquo; Gallerie précédente </span></a>
         <span class="right_ab">
-            <a href="#"><span>Gallerie suivante &raquo;</span></a>
+            <a href="@controllers.routes.Galleries.next(gallery.galleryId)"><span>Gallerie suivante &raquo;</span></a>
         </span>
         <div class="clr"></div>
     </div> <!-- header -->
 
-    <div class="content">
-
+    <div class="div-menu">
         <div id="dl-menu" class="dl-menuwrapper">
             <button class="dl-trigger">Open Menu</button>
             <ul class="dl-menu" id="mainMenu" data-list="@controllers.routes.Menus.menu">
-
             </ul>
         </div><!-- /dl-menuwrapper -->
+    </div>
 
+    <div class="content">
         <h1>@gallery.title <span>@gallery.comment</span></h1>
-
         <div id="rg-gallery" class="rg-gallery">
             <div class="rg-thumbs">
                 <!-- Elastislide Carousel Thumbnail Viewer -->

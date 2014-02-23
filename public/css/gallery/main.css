@@ -29,7 +29,7 @@ h1{
 	font-family:"Pacifico", Georgia, "Times New Roman", serif;
 	text-shadow:1px 1px 1px #000;
 	//padding-left : 50px;
-	padding-bottom:30px;
+	padding-bottom:10px;
 	line-height:40px;
 }
 h1 span{
@@ -42,6 +42,8 @@ h1 span{
 	padding-top:10px;
 	text-shadow:none;
 	//text-transform:uppercase;
+	word-wrap: break-word;
+	white-space: pre;
 }
 /* Header Style */
 .header{
