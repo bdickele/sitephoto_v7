@@ -24,5 +24,4 @@ object CategoryRW extends Controller with MongoController {
       sort(BSONDocument("rank" -> -1)).
       cursor[CategorySimple].
       collect[List]()
-
 }

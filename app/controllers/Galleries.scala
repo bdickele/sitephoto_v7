@@ -17,20 +17,20 @@ object Galleries extends Controller {
 
   def view(galleryId: Int) = Action.async {
     val future = galleryId match {
-      case -1 => GalleryRW.findLast
+      case -1 => GalleryRW.findDefault
       case n => GalleryRW.find(n)
     }
 
-     future.map {
-       option => option match {
-         case None => {
-           val message = "Could not find an online gallery for id "+ galleryId
-           Logger.error(message)
-           BadRequest(message)
-         }
-         case Some(gallery) => Ok(views.html.gallery(gallery))
-       }
-     }
+    future.map {
+      option => option match {
+        case None => {
+          val message = "Could not find an online gallery for id " + galleryId
+          Logger.error(message)
+          BadRequest(message)
+        }
+        case Some(gallery) => Ok(views.html.gallery(gallery))
+      }
+    }
   }
 
   /**
@@ -69,7 +69,7 @@ object Galleries extends Controller {
       case n => categories.find(_.rank < category.rank).get.categoryId
     }
 
-    val futureGallery = GalleryRW.findLastGalleryOfCategory(newCategoryId)
+    val futureGallery = GalleryRW.findLastGallerySimpleOfCategory(newCategoryId)
 
     // In case category doesn't contain any gallery
     Await.result(futureGallery, Duration(5, TimeUnit.SECONDS)) match {
@@ -114,7 +114,7 @@ object Galleries extends Controller {
       case n => categories.apply(categoryIndex + 1).categoryId
     }
 
-    val futureGallery = GalleryRW.findFirstGalleryOfCategory(newCategoryId)
+    val futureGallery = GalleryRW.findFirstGallerySimpleOfCategory(newCategoryId)
 
     // In case category doesn't contain any gallery
     Await.result(futureGallery, Duration(5, TimeUnit.SECONDS)) match {

@@ -3,9 +3,11 @@ package models
 import play.api.mvc.Controller
 import play.modules.reactivemongo.MongoController
 import reactivemongo.api.collections.default.BSONCollection
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
 import reactivemongo.bson.BSONDocument
 import play.api.libs.concurrent.Execution.Implicits._
+import scala.concurrent.duration.Duration
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by bdickele
@@ -15,11 +17,25 @@ object GalleryRW extends Controller with MongoController {
 
   def collection = db.collection[BSONCollection]("gallery")
 
-  def findLast: Future[Option[Gallery]] =
-    collection.
-      find(BSONDocument("online" -> true)).
-      sort(BSONDocument("rank" -> -1)).
-      one[Gallery]
+  /**
+   * @return Most recent gallery (displayed by default)
+   */
+  def findDefault: Future[Option[Gallery]] = {
+
+    def findLastGalleryOfCategories(categories: List[CategorySimple]): Option[Gallery] = categories match {
+      case Nil => throw new Error("That's weird but we could not find any online gallery")
+      case head :: tail => {
+        val futureLastGallery = findLastGalleryOfCategory(head.categoryId)
+        val optionLastGallery = Await.result(futureLastGallery, Duration(5, TimeUnit.SECONDS))
+        optionLastGallery match {
+          case None => findLastGalleryOfCategories(tail)
+          case some => some
+        }
+      }
+    }
+
+    CategoryRW.findAll.map(findLastGalleryOfCategories(_))
+  }
 
   def find(galleryId: Int): Future[Option[Gallery]] =
     collection.
@@ -45,12 +61,6 @@ object GalleryRW extends Controller with MongoController {
       sort(BSONDocument("rank" -> -1)).
       one[GallerySimple]
 
-  def findLastGalleryOfCategory(categoryId: Int): Future[Option[GallerySimple]] =
-    collection.
-      find(BSONDocument("categoryId" -> categoryId)).
-      sort(BSONDocument("rank" -> -1)).
-      one[GallerySimple]
-
   /**
    * Purpose of that method is to returning gallery, of the same category, that is right after a
    * gallery with passed rank. If currentRank has a rank higher than all its siblings, then it will return None
@@ -64,7 +74,19 @@ object GalleryRW extends Controller with MongoController {
       sort(BSONDocument("rank" -> 1)).
       one[GallerySimple]
 
-  def findFirstGalleryOfCategory(categoryId: Int): Future[Option[GallerySimple]] =
+  def findLastGallerySimpleOfCategory(categoryId: Int): Future[Option[GallerySimple]] =
+    collection.
+      find(BSONDocument("categoryId" -> categoryId)).
+      sort(BSONDocument("rank" -> -1)).
+      one[GallerySimple]
+
+  def findLastGalleryOfCategory(categoryId: Int): Future[Option[Gallery]] =
+    collection.
+      find(BSONDocument("categoryId" -> categoryId)).
+      sort(BSONDocument("rank" -> -1)).
+      one[Gallery]
+  
+  def findFirstGallerySimpleOfCategory(categoryId: Int): Future[Option[GallerySimple]] =
     collection.
       find(BSONDocument("categoryId" -> categoryId)).
       sort(BSONDocument("rank" -> 1)).
