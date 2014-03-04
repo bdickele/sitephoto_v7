@@ -42,13 +42,15 @@
 	position: relative;
 	cursor: pointer;
 	outline: none;
-	background: #08cbc4;
+	//background: #08cbc4;
+	background: #555;
 }
 
 .dl-menuwrapper button:hover,
 .dl-menuwrapper button.dl-active,
 .dl-menuwrapper ul {
-	background: #00b4ae;
+	//background: #00b4ae;
+	background: #333;
 }
 
 .dl-menuwrapper button:after {
@@ -79,10 +81,13 @@
 .dl-menuwrapper li a {
 	display: block;
 	position: relative;
-	padding: 15px 20px;
-	font-size: 16px;
-	line-height: 20px;
-	font-weight: 300;
+	//padding: 15px 20px;
+	//font-size: 16px;
+	//line-height: 20px;
+	//font-weight: 300;
+	padding: 10px 15px;
+    font-size: 14px;
+    line-height: 20px
 	color: #fff;
 	outline: none;
 }
@@ -100,7 +105,7 @@
 .dl-menuwrapper li > a:not(:only-child):after {
 	position: absolute;
 	top: 0;
-	line-height: 50px;
+	line-height: 40px;
 	font-family: 'icomoon';
 	speak: none;
 	-webkit-font-smoothing: antialiased;

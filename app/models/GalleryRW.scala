@@ -57,7 +57,7 @@ object GalleryRW extends Controller with MongoController {
    */
   def findPreviousGalleryInCategory(categoryId: Int, currentRank: Int): Future[Option[GallerySimple]] =
     collection.
-      find(BSONDocument("categoryId" -> categoryId, "rank" -> BSONDocument("$lt" -> currentRank))).
+      find(BSONDocument("categoryId" -> categoryId, "online" -> true, "rank" -> BSONDocument("$lt" -> currentRank))).
       sort(BSONDocument("rank" -> -1)).
       one[GallerySimple]
 
@@ -70,25 +70,25 @@ object GalleryRW extends Controller with MongoController {
    */
   def findNextGalleryInCategory(categoryId: Int, currentRank: Int): Future[Option[GallerySimple]] =
     collection.
-      find(BSONDocument("categoryId" -> categoryId, "rank" -> BSONDocument("$gt" -> currentRank))).
+      find(BSONDocument("categoryId" -> categoryId, "online" -> true, "rank" -> BSONDocument("$gt" -> currentRank))).
       sort(BSONDocument("rank" -> 1)).
       one[GallerySimple]
 
   def findLastGallerySimpleOfCategory(categoryId: Int): Future[Option[GallerySimple]] =
     collection.
-      find(BSONDocument("categoryId" -> categoryId)).
+      find(BSONDocument("categoryId" -> categoryId, "online" -> true)).
       sort(BSONDocument("rank" -> -1)).
       one[GallerySimple]
 
   def findLastGalleryOfCategory(categoryId: Int): Future[Option[Gallery]] =
     collection.
-      find(BSONDocument("categoryId" -> categoryId)).
+      find(BSONDocument("categoryId" -> categoryId, "online" -> true)).
       sort(BSONDocument("rank" -> -1)).
       one[Gallery]
   
   def findFirstGallerySimpleOfCategory(categoryId: Int): Future[Option[GallerySimple]] =
     collection.
-      find(BSONDocument("categoryId" -> categoryId)).
+      find(BSONDocument("categoryId" -> categoryId, "online" -> true)).
       sort(BSONDocument("rank" -> 1)).
       one[GallerySimple]
 }
