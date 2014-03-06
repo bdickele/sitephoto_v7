@@ -6,8 +6,8 @@ package util
  */
 object Const {
 
-  //val WebRoot = "http://www.dickele.com/photostock/"
-  val WebRoot = "http://localhost:8080/photostock/"
+  val WebRoot = "http://www.dickele.com/photostock/"
+  //val WebRoot = "http://localhost:8080/photostock/"
 
   val FolderWeb = "web/"
   val FolderThumbnail = "thumbnail/"
