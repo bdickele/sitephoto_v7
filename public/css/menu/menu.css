@@ -33,11 +33,11 @@
 }
 
 .dl-menuwrapper button {
-	background: #ccc;
 	border: none;
 	width: 18px;
 	height: 18px;
-	text-indent: -900em;
+	//text-indent: -900em;
+	text-indent: -0.2em;
 	overflow: hidden;
 	position: relative;
 	cursor: pointer;
@@ -53,6 +53,7 @@
 	background: #333;
 }
 
+/*
 .dl-menuwrapper button:after {
 	content: '';
 	position: absolute;
@@ -65,6 +66,7 @@
     		0 5px 0 #fff,
     		0 10px 0 #fff;
 }
+*/
 
 .dl-menuwrapper ul {
 	padding: 0;
