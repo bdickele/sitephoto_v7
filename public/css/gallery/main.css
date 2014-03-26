@@ -68,6 +68,9 @@ h1 span{
 .header a span{
 	font-weight:bold;
 }
+.header span.center_ab{
+	float:center;
+}
 .header span.right_ab{
 	float:right;
 }
