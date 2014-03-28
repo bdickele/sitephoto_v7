@@ -1,0 +1,37 @@
+@(path: String)
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Caroline et Bertrand</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/gallery/reset.css")'/>
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/gallery/main.css")'/>
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/gallery/style.css")'/>
+    <link rel="shortcut icon" href='@routes.Assets.at("images/favicon.ico")'/>
+    <script type="text/javascript" src="@routes.Application.javascriptRoutes"></script>
+
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow&v1' rel='stylesheet' type='text/css'/>
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'/>
+
+</head>
+<body>
+<div class="container">
+
+    <div class="content">
+        <br><br>
+        <h1>Ooops, page not found<span>URL "@path" doesn't match any route, check it please.
+        </span></h1>
+        <br><h2><a href="javascript:history.back()">Back</a></h2>
+    </div>  <!-- content -->
+
+</div> <!-- container -->
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src='@routes.Assets.at("js/menu/modernizr.custom.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("js/gallery/jquery.tmpl.min.js")'></script>
+</body>
+</html>

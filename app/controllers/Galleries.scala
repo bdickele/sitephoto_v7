@@ -1,7 +1,6 @@
 package controllers
 
 import play.api.mvc.{Action, Controller}
-import play.api.Logger
 import models._
 import scala.concurrent.{Future, Await}
 import scala.concurrent.duration.Duration
@@ -15,6 +14,11 @@ import scala.Some
  */
 object Galleries extends Controller {
 
+  /**
+   * Main page
+   * @param galleryId Gallery ID
+   * @return
+   */
   def view(galleryId: Int) = Action.async {
     val future = galleryId match {
       case -1 => GalleryRW.findDefault
@@ -23,11 +27,7 @@ object Galleries extends Controller {
 
     future.map {
       option => option match {
-        case None => {
-          val message = "Could not find an online gallery for id " + galleryId
-          Logger.error(message)
-          BadRequest(message)
-        }
+        case None => BadRequest(views.html.badRequest("Could not find an online gallery for id " + galleryId))
         case Some(gallery) => Ok(views.html.gallery(gallery))
       }
     }
@@ -35,27 +35,32 @@ object Galleries extends Controller {
 
   /**
    * Redirect to previous gallery of passed gallery ID
-   * @param galleryId
+   * @param galleryId Gallery ID
    * @return
    */
   def previous(galleryId: Int) = Action.async {
-    val gallery = Await.result(GalleryRW.findSimple(galleryId), Duration(5, TimeUnit.SECONDS)).get
+    val optionGallery = Await.result(GalleryRW.findSimple(galleryId), Duration(5, TimeUnit.SECONDS))
 
-    val previousFuture = GalleryRW.findPreviousGalleryInCategory(gallery.categoryId, gallery.rank)
-    val previousGallery: Future[GallerySimple] = previousFuture.map {
-      option => option match {
-        case Some(g) => g
-        case None => lastGalleryOfPreviousCategory(gallery.categoryId)
+    optionGallery match {
+      case None => Future.successful(BadRequest(views.html.badRequest("Could not find an online gallery for id " + galleryId)))
+      case Some(gallery) => {
+        val previousFuture = GalleryRW.findPreviousGalleryInCategory(gallery.categoryId, gallery.rank)
+        val previousGallery: Future[GallerySimple] = previousFuture.map {
+          option => option match {
+            case Some(g) => g
+            case None => lastGalleryOfPreviousCategory(gallery.categoryId)
+          }
+        }
+
+        previousGallery.map(g => Redirect(routes.Galleries.view(g.galleryId)))
       }
     }
-
-    previousGallery.map(g => Redirect(routes.Galleries.view(g.galleryId)))
   }
 
   /**
    * Retrieves ID of last gallery of category before category of passed categoryId.
    * If categoryId stands for first category, then last category (the most recent) is selected
-   * @param categoryId
+   * @param categoryId Category ID
    */
   def lastGalleryOfPreviousCategory(categoryId: Int): GallerySimple = {
     // Categories are sorted by rank, what means the most recent one is the first
@@ -80,27 +85,32 @@ object Galleries extends Controller {
 
   /**
    * Redirect to next gallery of passed gallery ID
-   * @param galleryId
+   * @param galleryId Gallery ID
    * @return
    */
   def next(galleryId: Int) = Action.async {
-    val gallery = Await.result(GalleryRW.findSimple(galleryId), Duration(5, TimeUnit.SECONDS)).get
+    val optionGallery = Await.result(GalleryRW.findSimple(galleryId), Duration(5, TimeUnit.SECONDS))
 
-    val nextFuture = GalleryRW.findNextGalleryInCategory(gallery.categoryId, gallery.rank)
-    val nextGallery: Future[GallerySimple] = nextFuture.map {
-      option => option match {
-        case Some(g) => g
-        case None => firstGalleryOfNextCategory(gallery.categoryId)
+    optionGallery match {
+      case None => Future.successful(BadRequest(views.html.badRequest("Could not find an online gallery for id " + galleryId)))
+      case Some(gallery) => {
+        val nextFuture = GalleryRW.findNextGalleryInCategory(gallery.categoryId, gallery.rank)
+        val nextGallery: Future[GallerySimple] = nextFuture.map {
+          option => option match {
+            case Some(g) => g
+            case None => firstGalleryOfNextCategory(gallery.categoryId)
+          }
+        }
+
+        nextGallery.map(g => Redirect(routes.Galleries.view(g.galleryId)))
       }
     }
-
-    nextGallery.map(g => Redirect(routes.Galleries.view(g.galleryId)))
   }
 
   /**
    * Retrieves ID of first gallery of category after category of passed categoryId.
    * If categoryId stands for last category, then first category (the oldest) is selected
-   * @param categoryId
+   * @param categoryId Category ID
    */
   def firstGalleryOfNextCategory(categoryId: Int): GallerySimple = {
     // Categories are sorted by rank, what means the most recent one is the first: let's reverse it
