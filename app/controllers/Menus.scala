@@ -12,8 +12,6 @@ import models.MenuRW
 object Menus extends Controller {
 
   def menu() = Action.async {
-    MenuRW.createMenu.map {
-      menu => Ok(Json.toJson(menu))
-    }
+    MenuRW.createMenu.map(menu => Ok(Json.toJson(menu)))
   }
 }

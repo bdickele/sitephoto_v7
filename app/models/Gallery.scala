@@ -35,10 +35,9 @@ object Gallery {
 
       def readPictures(option: Option[BSONArray]): List[GalleryPic] = option match {
         case None => List()
-        case Some(array) => {
+        case Some(array) =>
           val stream: Stream[BSONValue] = array.values
           stream.toList.map(value => readPicture(value.asInstanceOf[BSONDocument]))
-        }
       }
 
       Gallery(

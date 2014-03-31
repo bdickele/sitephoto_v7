@@ -43,7 +43,7 @@ object Galleries extends Controller {
 
     optionGallery match {
       case None => Future.successful(BadRequest(views.html.badRequest("Could not find an online gallery for id " + galleryId)))
-      case Some(gallery) => {
+      case Some(gallery) =>
         val previousFuture = GalleryRW.findPreviousGalleryInCategory(gallery.categoryId, gallery.rank)
         val previousGallery: Future[GallerySimple] = previousFuture.map {
           option => option match {
@@ -53,7 +53,6 @@ object Galleries extends Controller {
         }
 
         previousGallery.map(g => Redirect(routes.Galleries.view(g.galleryId)))
-      }
     }
   }
 
@@ -93,7 +92,7 @@ object Galleries extends Controller {
 
     optionGallery match {
       case None => Future.successful(BadRequest(views.html.badRequest("Could not find an online gallery for id " + galleryId)))
-      case Some(gallery) => {
+      case Some(gallery) =>
         val nextFuture = GalleryRW.findNextGalleryInCategory(gallery.categoryId, gallery.rank)
         val nextGallery: Future[GallerySimple] = nextFuture.map {
           option => option match {
@@ -103,7 +102,6 @@ object Galleries extends Controller {
         }
 
         nextGallery.map(g => Redirect(routes.Galleries.view(g.galleryId)))
-      }
     }
   }
 

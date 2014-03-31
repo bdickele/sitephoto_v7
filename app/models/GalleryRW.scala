@@ -24,17 +24,16 @@ object GalleryRW extends Controller with MongoController {
 
     def findLastGalleryOfCategories(categories: List[CategorySimple]): Option[Gallery] = categories match {
       case Nil => throw new Error("That's weird but we could not find any online gallery")
-      case head :: tail => {
+      case head :: tail =>
         val futureLastGallery = findLastGalleryOfCategory(head.categoryId)
         val optionLastGallery = Await.result(futureLastGallery, Duration(5, TimeUnit.SECONDS))
         optionLastGallery match {
           case None => findLastGalleryOfCategories(tail)
           case some => some
         }
-      }
     }
 
-    CategoryRW.findAll.map(findLastGalleryOfCategories(_))
+    CategoryRW.findAll.map(findLastGalleryOfCategories)
   }
 
   def find(galleryId: Int): Future[Option[Gallery]] =
@@ -51,8 +50,8 @@ object GalleryRW extends Controller with MongoController {
   /**
    * Purpose of that method is to returning gallery, of the same category, that is right before a
    * gallery with passed rank. If currentRank is 0 then it will return None
-   * @param categoryId
-   * @param currentRank
+   * @param categoryId Category ID
+   * @param currentRank Index of the gallery in the category
    * @return
    */
   def findPreviousGalleryInCategory(categoryId: Int, currentRank: Int): Future[Option[GallerySimple]] =
@@ -64,8 +63,8 @@ object GalleryRW extends Controller with MongoController {
   /**
    * Purpose of that method is to returning gallery, of the same category, that is right after a
    * gallery with passed rank. If currentRank has a rank higher than all its siblings, then it will return None
-   * @param categoryId
-   * @param currentRank
+   * @param categoryId Category ID
+   * @param currentRank Index of the gallery in the category
    * @return
    */
   def findNextGalleryInCategory(categoryId: Int, currentRank: Int): Future[Option[GallerySimple]] =
