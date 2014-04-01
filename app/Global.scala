@@ -11,8 +11,7 @@ import scala.concurrent.Future
 object Global extends GlobalSettings {
 
   override def onStart(app: Application) {
-    val databaseMessage =
-      app.configuration.getString("mongodb.uri") match {
+    val databaseMessage = app.configuration.getString("mongodb.uri") match {
         case None => "Damn, could not find database configuration"
         case Some(dbUri) =>
           if (dbUri.contains("localhost")) "You're running on a LOCAL database"
@@ -21,17 +20,15 @@ object Global extends GlobalSettings {
     prettyLog(databaseMessage)
   }
 
-  override def onHandlerNotFound(request: RequestHeader) = {
+  override def onHandlerNotFound(request: RequestHeader) =
     Future.successful(NotFound(
       views.html.notFound(request.path)
     ))
-  }
 
-  override def onError(request: RequestHeader, ex: Throwable) = {
+  override def onError(request: RequestHeader, ex: Throwable) =
     Future.successful(BadRequest(
       views.html.badRequest(ex.getMessage)
     ))
-  }
 
   def prettyLog(messages: String*) = {
     Logger.info("****************************************************")
