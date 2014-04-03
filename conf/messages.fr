@@ -1,0 +1,13 @@
+title = Caroline et Bertrand
+
+previous = Précédent
+next = Suivant
+
+gallery.previous = Gallerie précédente
+gallery.next = Gallerie suivante
+
+error.somethingsWrong = Ooops, quelque chose s'est mal passé
+error.pageNotFound.prefix = Ooops, page non trouvée
+error.pageNotFound.suffix = ne correspond à aucune route, veuillez la vérifier.
+
+back = Retour

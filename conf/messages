@@ -1,0 +1,13 @@
+title = Caroline and Bertrand
+
+previous = Previous
+next = Next
+
+gallery.previous = Previous gallery
+gallery.next = Next gallery
+
+error.somethingsWrong = Ooops, something's wrong
+error.pageNotFound.prefix = Ooops, page not found
+error.pageNotFound.suffix = doesn't match any route, check it please.
+
+back = Back

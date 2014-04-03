@@ -1,4 +1,4 @@
-@(gallery: models.Gallery)
+@(gallery: models.Gallery)(implicit lang: Lang)
 
 <!DOCTYPE html>
 
@@ -17,7 +17,7 @@
     <script type="text/javascript" src="@routes.Application.javascriptRoutes"></script>
 
     <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow&v1' rel='stylesheet' type='text/css'/>
-    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'/>
+    <link href='http://fonts.googleapis.com/css?family=Courgette' rel='stylesheet' type='text/css'/>
     <noscript>
         <style>
             .es-carousel ul{
@@ -45,11 +45,10 @@
 </head>
 <body>
 <div class="container">
-
     <div class="header">
-        <a href="@controllers.routes.Galleries.previous(gallery.galleryId)"><span>&laquo; Gallerie précédente </span></a>
+        <a href="@controllers.routes.Galleries.previous(gallery.galleryId)"><span>&laquo; @Messages("gallery.previous") </span></a>
         <span class="right_ab">
-            <a href="@controllers.routes.Galleries.next(gallery.galleryId)"><span>Gallerie suivante &raquo;</span></a>
+            <a href="@controllers.routes.Galleries.next(gallery.galleryId)"><span>@Messages("gallery.next") &raquo;</span></a>
         </span>
         <div class="clr"></div>
     </div> <!-- header -->
@@ -69,8 +68,8 @@
                 <!-- Elastislide Carousel Thumbnail Viewer -->
                 <div class="es-carousel-wrapper">
                     <div class="es-nav">
-                        <span class="es-nav-prev">Previous</span>
-                        <span class="es-nav-next">Next</span>
+                        <span class="es-nav-prev">@Messages("previous")</span>
+                        <span class="es-nav-next">@Messages("previous")</span>
                     </div>
                     <div class="es-carousel">
                         <ul>

@@ -1,10 +1,10 @@
-@(error: String)
+@(error: String)(implicit lang: Lang)
 
 <!DOCTYPE html>
 
 <html>
 <head>
-    <title>Caroline et Bertrand</title>
+    <title>@Messages("title")</title>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -23,9 +23,9 @@
 
     <div class="content">
         <br><br>
-        <h1>Ooops, something's wrong<span>@error
+        <h1>@Messages("error.somethingsWrong")<span>@error
         </span></h1>
-        <br><h2><a href="javascript:history.back()">Back</a></h2>
+        <br><h2><a href="javascript:history.back()">@Messages("back")</a></h2>
     </div>  <!-- content -->
 
 </div> <!-- container -->
