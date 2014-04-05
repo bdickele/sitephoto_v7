@@ -3,7 +3,7 @@ package controllers
 import play.api.mvc.{Action, Controller}
 import play.api.libs.json.Json
 import play.api.libs.concurrent.Execution.Implicits._
-import models.MenuRW
+import service.MenuService
 
 /**
  * Created by bdickele
@@ -11,7 +11,7 @@ import models.MenuRW
  */
 object Menus extends Controller {
 
-  def menu() = Action.async {
-    MenuRW.createMenu.map(menu => Ok(Json.toJson(menu)))
+  def menu = Action.async {
+    MenuService.createMenu.map(menu => Ok(Json.toJson(menu)))
   }
 }

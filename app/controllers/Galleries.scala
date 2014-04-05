@@ -1,12 +1,12 @@
 package controllers
 
-import play.api.mvc.{Action, Controller}
 import models._
-import scala.concurrent.{Future, Await}
-import scala.concurrent.duration.Duration
-import java.util.concurrent.TimeUnit
-import play.api.libs.concurrent.Execution.Implicits._
 import scala.Some
+import scala.concurrent.{Future, Await}
+import scala.concurrent.duration._
+import play.api.mvc.{SimpleResult, Action, Controller}
+import play.api.libs.concurrent.Execution.Implicits._
+import service.{CategoryService, GalleryService}
 
 /**
  * Created by bdickele
@@ -21,13 +21,13 @@ object Galleries extends Controller {
    */
   def view(galleryId: Int) = Action.async {
     val future = galleryId match {
-      case -1 => GalleryRW.findDefault
-      case n => GalleryRW.find(n)
+      case -1 => GalleryService.findDefault
+      case n => GalleryService.find(n)
     }
 
     future.map {
-      option => option match {
-        case None => BadRequest(views.html.badRequest("Could not find an online gallery for id " + galleryId))
+      _ match {
+        case None => couldNotFindGallery(galleryId)
         case Some(gallery) => Ok(views.html.gallery(gallery))
       }
     }
@@ -39,15 +39,15 @@ object Galleries extends Controller {
    * @return
    */
   def previous(galleryId: Int) = Action.async {
-    val future = GalleryRW.findSimple(galleryId)
+    val future = GalleryService.findBasic(galleryId)
 
     future.flatMap {
       _ match {
-        case None => Future.successful(BadRequest(views.html.badRequest("Could not find an online gallery for id " + galleryId)))
+        case None => Future.successful(couldNotFindGallery(galleryId))
 
         case Some(gallery) =>
-          val previousFuture = GalleryRW.findPreviousGalleryInCategory(gallery.categoryId, gallery.rank)
-          val previousGallery: Future[GallerySimple] = previousFuture.map {
+          val previousFuture = GalleryService.findPreviousGalleryInCategory(gallery.categoryId, gallery.rank)
+          val previousGallery: Future[GalleryBasic] = previousFuture.map {
             _ match {
               case Some(g) => g
               case None => lastGalleryOfPreviousCategory(gallery.categoryId)
@@ -64,10 +64,10 @@ object Galleries extends Controller {
    * If categoryId stands for first category, then last category (the most recent) is selected
    * @param categoryId Category ID
    */
-  def lastGalleryOfPreviousCategory(categoryId: Int): GallerySimple = {
+  def lastGalleryOfPreviousCategory(categoryId: Int): GalleryBasic = {
 
     // Categories are sorted by rank, what means the most recent one is the first
-    val categories: List[CategorySimple] = Await.result(CategoryRW.findAll, Duration(5, TimeUnit.SECONDS))
+    val categories: List[Category] = Await.result(CategoryService.findAll, 5 seconds)
 
     val category = categories.find(_.categoryId == categoryId).get
     val rank = category.rank
@@ -77,38 +77,13 @@ object Galleries extends Controller {
       case n => categories.find(_.rank < category.rank).get.categoryId
     }
 
-    val futureGallery = GalleryRW.findLastGallerySimpleOfCategory(newCategoryId)
+    val futureGallery = GalleryService.findLastGalleryBasicOfCategory(newCategoryId)
 
     // In case category doesn't contain any gallery
-    Await.result(futureGallery, Duration(5, TimeUnit.SECONDS)) match {
+    Await.result(futureGallery, 5 seconds) match {
       case None => lastGalleryOfPreviousCategory(newCategoryId)
       case Some(g) => g
     }
-
-    /*
-    // Categories are sorted by rank, what means the most recent one is the first
-    val futureCategories: Future[List[CategorySimple]] = CategoryRW.findAll
-
-    futureCategories.flatMap {
-      categories =>
-        val category = categories.find(_.categoryId == categoryId).get
-        val rank = category.rank
-    }
-
-
-    val newCategoryId: Int = rank match {
-      case 0 => categories.head.categoryId
-      case n => categories.find(_.rank < category.rank).get.categoryId
-    }
-
-    val futureGallery = GalleryRW.findLastGallerySimpleOfCategory(newCategoryId)
-
-    // In case category doesn't contain any gallery
-    Await.result(futureGallery, Duration(5, TimeUnit.SECONDS)) match {
-      case None => lastGalleryOfPreviousCategory(newCategoryId)
-      case Some(g) => g
-    }
-    */
   }
 
   /**
@@ -117,15 +92,15 @@ object Galleries extends Controller {
    * @return
    */
   def next(galleryId: Int) = Action.async {
-    val future = GalleryRW.findSimple(galleryId)
+    val future = GalleryService.findBasic(galleryId)
 
     future.flatMap {
       _ match {
-        case None => Future.successful(BadRequest(views.html.badRequest("Could not find an online gallery for id " + galleryId)))
+        case None => Future.successful(couldNotFindGallery(galleryId))
 
         case Some(gallery) =>
-          val nextFuture = GalleryRW.findNextGalleryInCategory(gallery.categoryId, gallery.rank)
-          val nextGallery: Future[GallerySimple] = nextFuture.map {
+          val nextFuture = GalleryService.findNextGalleryInCategory(gallery.categoryId, gallery.rank)
+          val nextGallery: Future[GalleryBasic] = nextFuture.map {
             _ match {
               case Some(g) => g
               case None => firstGalleryOfNextCategory(gallery.categoryId)
@@ -142,9 +117,9 @@ object Galleries extends Controller {
    * If categoryId stands for last category, then first category (the oldest) is selected
    * @param categoryId Category ID
    */
-  def firstGalleryOfNextCategory(categoryId: Int): GallerySimple = {
+  def firstGalleryOfNextCategory(categoryId: Int): GalleryBasic = {
     // Categories are sorted by rank, what means the most recent one is the first: let's reverse it
-    val categories: List[CategorySimple] = Await.result(CategoryRW.findAll, Duration(5, TimeUnit.SECONDS)).reverse
+    val categories: List[Category] = Await.result(CategoryService.findAll, 5 seconds).reverse
 
     val categoryIndex = categories.indexWhere(_.categoryId == categoryId)
     val lastIndex = categories.length - 1
@@ -154,12 +129,15 @@ object Galleries extends Controller {
       case n => categories.apply(categoryIndex + 1).categoryId
     }
 
-    val futureGallery = GalleryRW.findFirstGallerySimpleOfCategory(newCategoryId)
+    val futureGallery = GalleryService.findFirstGalleryBasicOfCategory(newCategoryId)
 
     // In case category doesn't contain any gallery
-    Await.result(futureGallery, Duration(5, TimeUnit.SECONDS)) match {
+    Await.result(futureGallery, 5 seconds) match {
       case None => firstGalleryOfNextCategory(newCategoryId)
       case Some(g) => g
     }
   }
+
+  def couldNotFindGallery(galleryId: Int): SimpleResult =
+    BadRequest(views.html.badRequest("Could not find an online gallery for id " + galleryId))
 }

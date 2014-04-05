@@ -1,28 +1,28 @@
 package app.models
 
 import org.specs2.mutable.Specification
-import models.GalleryRW
 import app.TestApplication
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.Duration
 import scala.concurrent.Await
+import service.GalleryService
 
 /**
  * Created by bdickele
  * Date: 2/23/14
  */
-class GalleryRWSpec extends Specification {
+class GalleryServiceSpec extends Specification {
 
   "Method findDefault" should {
 
     "return most recent oneline gallery" in new TestApplication {
 
-      val future = GalleryRW.findDefault
+      val future = GalleryService.findDefault
       val gallery = Await.result(future, Duration(5, TimeUnit.SECONDS)).get
 
-      gallery.galleryId must equalTo(17)
-      gallery.categoryId must equalTo(3)
-      gallery.title must equalTo("Décembre 2006 : Montpellier, Nîmes")
+      gallery.galleryId must equalTo(133)
+      gallery.categoryId must equalTo(10)
+      gallery.title must equalTo("Décembre 2013 (suite et fin)")
     }
   }
 
@@ -30,7 +30,7 @@ class GalleryRWSpec extends Specification {
 
     "return first Gallery when passing id 1" in new TestApplication {
 
-      val future = GalleryRW.find(1)
+      val future = GalleryService.find(1)
       val gallery = Await.result(future, Duration(5, TimeUnit.SECONDS)).get
 
       gallery.galleryId must equalTo(1)
@@ -40,7 +40,7 @@ class GalleryRWSpec extends Specification {
 
     "return first GallerySimple when passing id 1" in new TestApplication {
 
-      val future = GalleryRW.findSimple(1)
+      val future = GalleryService.findBasic(1)
       val gallery = Await.result(future, Duration(5, TimeUnit.SECONDS)).get
 
       gallery.galleryId must equalTo(1)
@@ -51,7 +51,7 @@ class GalleryRWSpec extends Specification {
   "Method findPreviousGalleryInCategory" should {
 
     "return previous gallery of same category when passed rank is > 0" in new TestApplication {
-      val future = GalleryRW.findPreviousGalleryInCategory(1, 1)
+      val future = GalleryService.findPreviousGalleryInCategory(1, 1)
       val gallery = Await.result(future, Duration(5, TimeUnit.SECONDS)).get
 
       gallery.galleryId must equalTo(1)
@@ -59,7 +59,7 @@ class GalleryRWSpec extends Specification {
     }
 
     "return None when passed rank is 0" in new TestApplication {
-      val future = GalleryRW.findPreviousGalleryInCategory(1, 0)
+      val future = GalleryService.findPreviousGalleryInCategory(1, 0)
       val option = Await.result(future, Duration(5, TimeUnit.SECONDS))
 
       option must equalTo(None)
@@ -69,7 +69,7 @@ class GalleryRWSpec extends Specification {
   "Method findNextGalleryInCategory" should {
 
     "return previous gallery of same category when passed rank is < max rank" in new TestApplication {
-      val future = GalleryRW.findNextGalleryInCategory(1, 0)
+      val future = GalleryService.findNextGalleryInCategory(1, 0)
       val gallery = Await.result(future, Duration(5, TimeUnit.SECONDS)).get
 
       gallery.galleryId must equalTo(2)
@@ -77,7 +77,7 @@ class GalleryRWSpec extends Specification {
     }
 
     "return None when passed rank is = max rank" in new TestApplication {
-      val future = GalleryRW.findNextGalleryInCategory(1, 1)
+      val future = GalleryService.findNextGalleryInCategory(1, 1)
       val option = Await.result(future, Duration(5, TimeUnit.SECONDS))
 
       option must equalTo(None)
@@ -87,7 +87,7 @@ class GalleryRWSpec extends Specification {
   "Method findFirstGallerySimpleOfCategory" should {
 
     "return Eté 2004 : divers when category ID is 1" in new TestApplication {
-      val future = GalleryRW.findFirstGallerySimpleOfCategory(1)
+      val future = GalleryService.findFirstGalleryBasicOfCategory(1)
       val gallery = Await.result(future, Duration(5, TimeUnit.SECONDS)).get
 
       gallery.galleryId must equalTo(1)
@@ -98,7 +98,7 @@ class GalleryRWSpec extends Specification {
   "Method findLastGallerySimpleOfCategory" should {
 
     "return Août 2004 : Mantoue et Venise when category ID is 1" in new TestApplication {
-      val future = GalleryRW.findLastGallerySimpleOfCategory(1)
+      val future = GalleryService.findLastGalleryBasicOfCategory(1)
       val gallery = Await.result(future, Duration(5, TimeUnit.SECONDS)).get
 
       gallery.galleryId must equalTo(2)
@@ -109,7 +109,7 @@ class GalleryRWSpec extends Specification {
   "Method findLastGalleryOfCategory" should {
 
     "return Août 2004 : Mantoue et Venise when category ID is 1" in new TestApplication {
-      val future = GalleryRW.findLastGalleryOfCategory(1)
+      val future = GalleryService.findLastGalleryOfCategory(1)
       val gallery = Await.result(future, Duration(5, TimeUnit.SECONDS)).get
 
       gallery.galleryId must equalTo(2)

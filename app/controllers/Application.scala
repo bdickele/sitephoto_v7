@@ -3,6 +3,10 @@ package controllers
 import play.api._
 import play.api.mvc._
 
+/**
+ * Application controller
+ * bdickele
+ */
 object Application extends Controller {
 
   def index = Action {
