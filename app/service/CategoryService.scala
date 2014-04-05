@@ -18,7 +18,7 @@ object CategoryService extends Controller with MongoController {
 
   def collection = db.collection[JSONCollection]("category")
 
-  // Mapper from JsObject to CategorySimple
+  // Mapper: JsObject -> Category
   implicit val categoryReader: Reads[Category] = (
     (__ \ "categoryId").read[Int] and
       (__ \ "rank").read[Int])(Category.apply _)

@@ -23,20 +23,20 @@ object GalleryService extends Controller with MongoController {
   def collection = db.collection[JSONCollection]("gallery")
 
 
-  // Mapper from JsObject to GalleryBasic
+  // Mapper: JsObject -> GalleryBasic
   implicit val gallerySimpleReader: Reads[GalleryBasic] = (
     (__ \ "categoryId").read[Int] and
       (__ \ "galleryId").read[Int] and
       (__ \ "rank").read[Int])(GalleryBasic.apply _)
 
-  // Mappers to convert a JsObject into a Gallery
-
+  // Mapper: JsObject -> GalleryPic
   implicit val galleryPicReader: Reads[GalleryPic] = (
     (__ \ "thumbnail").read[String] and
       (__ \ "web").read[String] and
       (__ \ "comment").readNullable[String]
     )(GalleryPic.apply _)
 
+  // Mapper: JsObject -> Gallery
   implicit val galleryReader: Reads[Gallery] = (
     (__ \ "categoryId").read[Int] and
       (__ \ "galleryId").read[Int] and
@@ -55,9 +55,7 @@ object GalleryService extends Controller with MongoController {
       case Nil => throw new Error("That's weird but we could not find any online gallery")
       case head :: tail =>
         val futureLastGallery = findLastGalleryOfCategory(head.categoryId)
-        println("-> 1")
         val optionLastGallery = Await.result(futureLastGallery, 5 seconds)
-        println("-> 2")
         optionLastGallery match {
           case None => findLastGalleryOfCategories(tail)
           case some => some
