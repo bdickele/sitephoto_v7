@@ -21,8 +21,7 @@ object Global extends GlobalSettings {
   }
 
   override def onStart(app: Application) {
-    // Parameters depending on dev/prod mode
-    // ...
+    super.onStart(app)
   }
 
   override def onHandlerNotFound(request: RequestHeader) =
