@@ -1,7 +1,10 @@
+import com.typesafe.config.ConfigFactory
+import java.io.File
 import play.api._
 import play.api.mvc._
 import play.api.mvc.Results._
 import scala.concurrent.Future
+import util.Const
 
 
 /**
@@ -10,14 +13,16 @@ import scala.concurrent.Future
  */
 object Global extends GlobalSettings {
 
+  override def onLoadConfig(config: Configuration, path: File, classloader: ClassLoader, mode: Mode.Mode) : Configuration = {
+    prettyLog("You're in " + mode.toString.toUpperCase + " mode")
+
+    val modeSpecificConfig = config ++ Configuration(ConfigFactory.load(s"connection.${mode.toString.toLowerCase}.conf"))
+    super.onLoadConfig(modeSpecificConfig, path, classloader, mode)
+  }
+
   override def onStart(app: Application) {
-    val databaseMessage = app.configuration.getString("mongodb.uri") match {
-      case None => "Damn, could not find database configuration"
-      case Some(dbUri) =>
-        if (dbUri.contains("localhost")) "You're running on a LOCAL database"
-        else "Keep in mind you're running on a REMOTE database"
-    }
-    prettyLog(databaseMessage)
+    // Parameters depending on dev/prod mode
+    // ...
   }
 
   override def onHandlerNotFound(request: RequestHeader) =

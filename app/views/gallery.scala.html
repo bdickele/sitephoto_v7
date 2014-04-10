@@ -74,8 +74,8 @@
                     <div class="es-carousel">
                         <ul>
                             @for(picture <- gallery.pictures){
-                            <li><a href="#"><img src="@(util.Const.WebRoot + picture.thumbnail)"
-                                                 data-large="@(util.Const.WebRoot + picture.web)"
+                            <li><a href="#"><img src="@(util.Const.PhotoStockRoot + picture.thumbnail)"
+                                                 data-large="@(util.Const.PhotoStockRoot + picture.web)"
                                                  alt="@picture.commentOrEmpty"
                                                  data-description="@picture.commentOrEmpty"/></a></li>
                             }
