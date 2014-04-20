@@ -7,7 +7,6 @@ import play.api.libs.json._
  * All "entity" classes we need
  * bdickele
  */
-
 case class Category(categoryId: Int,
                     rank: Int)
 
