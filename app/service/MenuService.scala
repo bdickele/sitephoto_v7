@@ -10,9 +10,9 @@ import play.api.libs.json._
 import play.api.libs.json.Reads._
 
 /**
- * Service returning JSon data used to build menu.
- * That service returns data JsObject.
- * Created by bdickele
+ * Service returning JSON data used to build menu.
+ * That service returns data as JsObject.
+ * bdickele
  */
 object MenuService extends Controller with MongoController {
 

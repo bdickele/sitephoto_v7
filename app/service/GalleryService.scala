@@ -7,12 +7,10 @@ import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 import models._
 import play.api.libs.json._
-import play.api.libs.json.Reads._
-import play.api.libs.functional.syntax._
 import models.Gallery
-import models.GalleryPic
 import play.modules.reactivemongo.json.collection.JSONCollection
 import models.Category
+import models.Models._
 
 /**
  * Service for retrieving data from collection "gallery"
@@ -21,29 +19,6 @@ import models.Category
 object GalleryService extends Controller with MongoController {
 
   def collection = db.collection[JSONCollection]("gallery")
-
-
-  // Mapper: JsObject -> GalleryBasic
-  implicit val gallerySimpleReader: Reads[GalleryBasic] = (
-    (__ \ "categoryId").read[Int] and
-      (__ \ "galleryId").read[Int] and
-      (__ \ "rank").read[Int])(GalleryBasic.apply _)
-
-  // Mapper: JsObject -> GalleryPic
-  implicit val galleryPicReader: Reads[GalleryPic] = (
-    (__ \ "thumbnail").read[String] and
-      (__ \ "web").read[String] and
-      (__ \ "comment").readNullable[String]
-    )(GalleryPic.apply _)
-
-  // Mapper: JsObject -> Gallery
-  implicit val galleryReader: Reads[Gallery] = (
-    (__ \ "categoryId").read[Int] and
-      (__ \ "galleryId").read[Int] and
-      (__ \ "title").read[String] and
-      (__ \ "comment").readNullable[String] and
-      (__ \ "pictures").read[List[GalleryPic]]
-    )(Gallery.apply _)
 
 
   /**

@@ -9,8 +9,8 @@ import play.api.libs.concurrent.Execution.Implicits._
 import service.{CategoryService, GalleryService}
 
 /**
- * Created by bdickele
- * Date: 2/17/14
+ * Controller related to galleries
+ * bdickele
  */
 object Galleries extends Controller {
 
@@ -26,10 +26,8 @@ object Galleries extends Controller {
     }
 
     future.map {
-      _ match {
-        case None => couldNotFindGallery(galleryId)
-        case Some(gallery) => Ok(views.html.gallery(gallery))
-      }
+      case None => couldNotFindGallery(galleryId)
+      case Some(gallery) => Ok(views.html.gallery(gallery))
     }
   }
 
@@ -42,20 +40,16 @@ object Galleries extends Controller {
     val future = GalleryService.findBasic(galleryId)
 
     future.flatMap {
-      _ match {
-        case None => Future.successful(couldNotFindGallery(galleryId))
+      case None => Future.successful(couldNotFindGallery(galleryId))
 
-        case Some(gallery) =>
-          val previousFuture = GalleryService.findPreviousGalleryInCategory(gallery.categoryId, gallery.rank)
-          val previousGallery: Future[GalleryBasic] = previousFuture.map {
-            _ match {
-              case Some(g) => g
-              case None => lastGalleryOfPreviousCategory(gallery.categoryId)
-            }
-          }
+      case Some(gallery) =>
+        val previousFuture = GalleryService.findPreviousGalleryInCategory(gallery.categoryId, gallery.rank)
+        val previousGallery: Future[GalleryBasic] = previousFuture.map {
+          case Some(g) => g
+          case None => lastGalleryOfPreviousCategory(gallery.categoryId)
+        }
 
-          previousGallery.map(g => Redirect(routes.Galleries.view(g.galleryId)))
-      }
+        previousGallery.map(g => Redirect(routes.Galleries.view(g.galleryId)))
     }
   }
 
@@ -95,20 +89,16 @@ object Galleries extends Controller {
     val future = GalleryService.findBasic(galleryId)
 
     future.flatMap {
-      _ match {
-        case None => Future.successful(couldNotFindGallery(galleryId))
+      case None => Future.successful(couldNotFindGallery(galleryId))
 
-        case Some(gallery) =>
-          val nextFuture = GalleryService.findNextGalleryInCategory(gallery.categoryId, gallery.rank)
-          val nextGallery: Future[GalleryBasic] = nextFuture.map {
-            _ match {
-              case Some(g) => g
-              case None => firstGalleryOfNextCategory(gallery.categoryId)
-            }
-          }
+      case Some(gallery) =>
+        val nextFuture = GalleryService.findNextGalleryInCategory(gallery.categoryId, gallery.rank)
+        val nextGallery: Future[GalleryBasic] = nextFuture.map {
+          case Some(g) => g
+          case None => firstGalleryOfNextCategory(gallery.categoryId)
+        }
 
-          nextGallery.map(g => Redirect(routes.Galleries.view(g.galleryId)))
-      }
+        nextGallery.map(g => Redirect(routes.Galleries.view(g.galleryId)))
     }
   }
 

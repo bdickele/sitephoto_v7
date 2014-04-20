@@ -6,8 +6,8 @@ import play.api.libs.concurrent.Execution.Implicits._
 import service.MenuService
 
 /**
- * Created by bdickele
- * Date: 2/22/14
+ * Controller dedicated to menu
+ * bdickele
  */
 object Menus extends Controller {
 
