@@ -4,18 +4,18 @@ import play.api._
 import play.api.mvc._
 import play.api.mvc.Results._
 import scala.concurrent.Future
-import util.Const
 
 
 /**
  * Overriding GlobalSettings to customize error pages for instance
- * Created by bdickele on 27/03/14.
+ * bdickele
  */
 object Global extends GlobalSettings {
 
   override def onLoadConfig(config: Configuration, path: File, classloader: ClassLoader, mode: Mode.Mode) : Configuration = {
     prettyLog("You're in " + mode.toString.toUpperCase + " mode")
 
+    // Adding connection.dev.conf or connection.prod.conf according to mode
     val modeSpecificConfig = config ++ Configuration(ConfigFactory.load(s"connection.${mode.toString.toLowerCase}.conf"))
     super.onLoadConfig(modeSpecificConfig, path, classloader, mode)
   }

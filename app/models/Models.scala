@@ -1,5 +1,6 @@
 package models
 
+import _root_.util.Const
 import play.api.libs.json._
 
 /**
@@ -18,11 +19,24 @@ case class Gallery(categoryId: Int,
                    galleryId: Int,
                    title: String,
                    comment: Option[String],
-                   pictures: List[GalleryPic])
+                   pictures: List[GalleryPic]) {
+
+  // Builds a version of Category whose path for thumbnail and web format pictures
+  // includes URL "http://...", so that pictures can be displayed in the web site
+  def buildForFrontEnd = copy(pictures = pictures.map(_.buildForFrontEnd))
+}
 
 case class GalleryPic(thumbnail: String,
                       web: String,
-                      comment: Option[String])
+                      comment: Option[String]) {
+
+  // Builds a version of GalleryPic whose path for thumbnail and web format pictures
+  // includes URL "http://...", so that pictures can be displayed in the web site`
+  def buildForFrontEnd = copy(
+    thumbnail = Const.PhotoStockRoot + this.thumbnail,
+    web = Const.PhotoStockRoot + this.web)
+}
+
 
 object Models {
 

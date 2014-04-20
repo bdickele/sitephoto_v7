@@ -7,10 +7,6 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.Await
 import service.GalleryService
 
-/**
- * Created by bdickele
- * Date: 2/23/14
- */
 class GalleryServiceSpec extends Specification {
 
   "Method findDefault" should {

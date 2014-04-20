@@ -27,7 +27,7 @@ object Galleries extends Controller {
 
     future.map {
       case None => couldNotFindGallery(galleryId)
-      case Some(gallery) => Ok(views.html.gallery(gallery))
+      case Some(gallery) => Ok(views.html.gallery(gallery.buildForFrontEnd))
     }
   }
 

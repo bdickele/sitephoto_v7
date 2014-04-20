@@ -3,7 +3,7 @@ package app.models
 import org.specs2.mutable.Specification
 import scala.concurrent.Await
 import scala.concurrent.duration._
-import play.api.libs.json.{JsArray, JsObject}
+import play.api.libs.json.JsObject
 import service.MenuService
 import app.TestApplication
 
@@ -20,11 +20,11 @@ class MenuServiceSpec extends Specification {
 
     "return complete menu" in new TestApplication {
 
-      categories.length must equalTo(10)
+      categories.length must equalTo(11)
 
       val firstCategory = categories.head
       println(firstCategory)
-      (firstCategory \ "label").as[String] must equalTo("2013")
+      (firstCategory \ "label").as[String] must equalTo("2014")
 
       val lastCategory = categories.last
       (lastCategory \ "label").as[String] must equalTo("2004")

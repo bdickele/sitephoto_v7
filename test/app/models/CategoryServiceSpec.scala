@@ -12,15 +12,14 @@ class CategoryServiceSpec extends Specification {
 
   "Method findAll" should {
 
-    "return all online categories (as CategorySimple)" in new TestApplication {
+    "return all online categories" in new TestApplication {
 
       val future = CategoryService.findAll
       val categories = Await.result(future, Duration(5, TimeUnit.SECONDS))
 
-      categories.length must equalTo(10)
-      categories.head.categoryId must equalTo(10)
+      categories.length must equalTo(11)
+      categories.head.categoryId must equalTo(11)
+      categories.last.categoryId must equalTo(1)
     }
-
   }
-
 }
