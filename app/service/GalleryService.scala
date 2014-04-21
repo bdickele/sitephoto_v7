@@ -5,6 +5,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 import play.modules.reactivemongo.MongoController
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
+import language.postfixOps
 import models._
 import play.api.libs.json._
 import models.Gallery

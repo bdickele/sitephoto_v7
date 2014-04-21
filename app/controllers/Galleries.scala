@@ -4,6 +4,7 @@ import models._
 import scala.Some
 import scala.concurrent.{Future, Await}
 import scala.concurrent.duration._
+import language.postfixOps
 import play.api.mvc.{SimpleResult, Action, Controller}
 import play.api.libs.concurrent.Execution.Implicits._
 import service.{CategoryService, GalleryService}
