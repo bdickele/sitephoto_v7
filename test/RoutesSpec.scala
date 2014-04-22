@@ -29,11 +29,6 @@ class RoutesSpec extends Specification {
       response.status must equalTo(OK)
     }
 
-    "return 400 (Bad request) for incorrect parameters in URL" in new TestApplication {
-      val response = responseURL("gallery/999") // Incorrect gallery ID
-      response.status must equalTo(BAD_REQUEST)
-    }
-
     "return 404 (Page not found) for incorrect URLs" in new TestApplication {
       val response = responseURL("whatever")
       response.status must equalTo(NOT_FOUND)

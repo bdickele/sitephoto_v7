@@ -20,7 +20,7 @@ object Galleries extends Controller {
    * @param galleryId Gallery ID
    * @return
    */
-  def view(galleryId: Int) = Action.async {
+  def gallery(galleryId: Int) = Action.async {
     val future = galleryId match {
       case -1 => GalleryService.findDefault
       case n => GalleryService.find(n)
@@ -50,7 +50,7 @@ object Galleries extends Controller {
           case None => lastGalleryOfPreviousCategory(gallery.categoryId)
         }
 
-        previousGallery.map(g => Redirect(routes.Galleries.view(g.galleryId)))
+        previousGallery.map(g => Redirect(routes.Galleries.gallery(g.galleryId)))
     }
   }
 
@@ -99,7 +99,7 @@ object Galleries extends Controller {
           case None => firstGalleryOfNextCategory(gallery.categoryId)
         }
 
-        nextGallery.map(g => Redirect(routes.Galleries.view(g.galleryId)))
+        nextGallery.map(g => Redirect(routes.Galleries.gallery(g.galleryId)))
     }
   }
 

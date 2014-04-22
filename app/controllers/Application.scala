@@ -10,7 +10,7 @@ import play.api.mvc._
 object Application extends Controller {
 
   def index = Action {
-    Redirect(routes.Galleries.view(-1))
+    Redirect(routes.Galleries.gallery(-1))
   }
 
   /**
@@ -20,7 +20,7 @@ object Application extends Controller {
   def javascriptRoutes = Action {
     implicit request =>
       Ok(Routes.javascriptRouter("jsRoutes")(
-        controllers.routes.javascript.Galleries.view)).as("text/javascript")
+        controllers.routes.javascript.Galleries.gallery)).as("text/javascript")
   }
 
 }
