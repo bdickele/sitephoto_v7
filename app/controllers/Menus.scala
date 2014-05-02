@@ -11,7 +11,8 @@ import service.MenuService
  */
 object Menus extends Controller {
 
-  def menu = Action.async {
-    MenuService.createMenu.map(menu => Ok(Json.toJson(menu)))
+  def menu() = Action.async {
+    val future = MenuService.createMenu()
+    future.map(menu => Ok(Json.toJson(menu)))
   }
 }
