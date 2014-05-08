@@ -66,7 +66,7 @@ $(function() {
 			init			= function() {
 				
 				// (not necessary) preloading the images here...
-				$items.add('<img src="images/ajax-loader.gif"/><img src="../../images/black.png"/>').imagesLoaded( function() {
+				$items.add('<img src="/assets/images/ajax-loader.gif"/><img src="/assets/images/black.png"/>').imagesLoaded( function() {
 					// add options
 					_addViewModes();
 					
@@ -210,16 +210,20 @@ $(function() {
 				$items.removeClass('selected');
 				$item.addClass('selected');
 					 
-				var $thumb		= $item.find('img'),
-					largesrc	= $thumb.data('large'),
-					title		= $thumb.data('description');
+				var $thumb		 = $item.find('img'),
+					largesrc	 = $thumb.data('large'),
+					title		 = $thumb.data('description'),
+					downloadPath = $thumb.data('print'),
+					shortName    = $thumb.data('name');
 				
 				$('<img/>').load( function() {
 					
 					$rgGallery.find('div.rg-image').empty().append('<img src="' + largesrc + '"/>');
 					
                     $rgGallery.find('div.rg-caption').show().children('p').empty().text( title );
-					
+                    $rgGallery.find('div.rg-caption').show().children('a').attr('href', downloadPath);
+                    $rgGallery.find('div.rg-caption').show().children('a').attr('download', shortName);
+
 					$loader.hide();
 					
 					if( mode === 'carousel' ) {

@@ -27,13 +27,21 @@ case class Gallery(categoryId: Int,
 
 case class GalleryPic(thumbnail: String,
                       web: String,
+                      print: Option[String],
                       comment: Option[String]) {
+
+  lazy val name = web.substring(web.lastIndexOf("/") + 1)
 
   // Builds a version of GalleryPic whose path for thumbnail and web format pictures
   // includes URL "http://...", so that pictures can be displayed in the web site`
+  // If there is no print version, then "print" will be equal to web version
   def buildForFrontEnd = copy(
     thumbnail = Const.PhotoStockRoot + this.thumbnail,
-    web = Const.PhotoStockRoot + this.web)
+    web = Const.PhotoStockRoot + this.web,
+    print = this.print match {
+      case None => Some(Const.PhotoStockRoot + this.web)
+      case Some(s) => Some(Const.PhotoStockRoot + s)
+    })
 }
 
 
