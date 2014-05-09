@@ -222,7 +222,7 @@ $(function() {
 					
                     $rgGallery.find('div.rg-caption').show().children('p').empty().text( title );
                     $rgGallery.find('div.rg-caption').show().children('a').attr('href', downloadPath);
-                    $rgGallery.find('div.rg-caption').show().children('a').attr('download', shortName);
+                    $rgGallery.find('div.rg-download').show().children('a').attr('download', shortName);
 
 					$loader.hide();
 					

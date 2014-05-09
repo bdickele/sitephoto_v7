@@ -55,6 +55,11 @@
 	padding:0 15px;
 	//text-transform:uppercase;
 }
+.rg-download {
+	text-align:center;
+	margin-top:15px;
+	position:relative;
+}
 .rg-view{
 	height:30px;
 }
