@@ -35,7 +35,6 @@
 	$.DLMenu.prototype = {
 
 		_init : function( options ) {
-
 			// options
 			this.options = $.extend( true, {}, $.DLMenu.defaults, options );
 			// cache some elements and initialize some variables

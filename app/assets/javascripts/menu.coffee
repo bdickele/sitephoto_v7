@@ -12,7 +12,7 @@ jQuery ($) ->
                     $.each children, (index2, child) ->
                         galleryTitle = child.label
                         galleryId = child.id
-                        link = jsRoutes.controllers.Galleries.view(galleryId)['url']
+                        link = jsRoutes.controllers.Galleries.gallery(galleryId)['url']
                         htmlCode += "<li><a href=\"" + link + "\">" + galleryTitle + "</a></li>"
 
                     htmlCode += "</ul>"
