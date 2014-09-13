@@ -16,7 +16,8 @@ object Global extends GlobalSettings {
     prettyLog("You're in " + mode.toString.toUpperCase + " mode")
 
     // Adding connection.dev.conf or connection.prod.conf according to mode
-    val modeSpecificConfig = config ++ Configuration(ConfigFactory.load(s"connection.${mode.toString.toLowerCase}.conf"))
+    val modeSpecificConfig = config
+    //++ Configuration(ConfigFactory.load(s"connection.${mode.toString.toLowerCase}.conf"))
     super.onLoadConfig(modeSpecificConfig, path, classloader, mode)
   }
 
