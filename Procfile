@@ -1,0 +1,1 @@
+web: target/universal/stage/bin/sitephoto_v7
