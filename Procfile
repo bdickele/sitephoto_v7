@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/sitephoto_v7
+web: target/start -Dhttp.port=${PORT} ${JAVA_OPTS}
