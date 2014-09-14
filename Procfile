@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/sitephoto_v7
+web: target/universal/stage/bin/sitephoto_v7 -Dhttp.port=$PORT
